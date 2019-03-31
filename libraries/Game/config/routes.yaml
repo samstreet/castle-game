@@ -1,0 +1,3 @@
+game.homepage:
+    path: /game
+    controller: Lib\Game\Http\Controllers\HomeController::indexAction

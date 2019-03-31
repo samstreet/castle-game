@@ -1,0 +1,37 @@
+{
+    "name": "sport80/test",
+    "authors": [
+        {
+            "name": "David Simon",
+            "email": "david.simon@sport80.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "": "src/",
+            "Lib\\": "libraries/"
+        }
+    },
+    "require": {
+        "php": "^7.1.3",
+        "ext-ctype": "*",
+        "ext-iconv": "*",
+        "symfony/console": "4.2.*",
+        "symfony/dotenv": "4.2.*",
+        "symfony/flex": "^1.1",
+        "symfony/framework-bundle": "4.2.*",
+        "symfony/yaml": "4.2.*",
+        "symfony/security-bundle": "4.2.*",
+        "symfony/config": "4.2.*",
+        "silex/silex": "^2.0"
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^4.2"
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        }
+    }
+}
