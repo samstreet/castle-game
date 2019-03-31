@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Lib\Game\Providers;
 
-use Lib\Core\Concerns as CoreConcerns;
+use Lib\Core\Providers\Concerns as ProviderConcerns;
+use Lib\Game\Http\Controllers\HomeController;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\ControllerCollection;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -16,7 +16,7 @@ use Symfony\Component\Yaml\Yaml;
  */
 class GameRouteServiceProvider implements ServiceProviderInterface
 {
-    use CoreConcerns\CanAccessProjectRoot;
+    use ProviderConcerns\RegistersRoutes;
 
     /**
      * @inheritdoc
@@ -25,12 +25,10 @@ class GameRouteServiceProvider implements ServiceProviderInterface
     {
         $routes = $app['game.config.routes'] = Yaml::parseFile(realpath((__DIR__.'/../config/routes.yaml')));
 
-        /** @var ControllerCollection $controllerCollection */
-        $controllerCollection = $app['controllers'];
-        foreach ($routes as $name => $route) {
-            $controllerCollection->match($route['path'], $route['controller'])
-                ->bind($name)
-                ->method($route['method'] ?? 'GET');
-        }
+        $app['game.home.controller'] = function() use ($app){
+            return new HomeController($app['core.test']);
+        };
+
+        $this->bindRoutes($routes, $app);
     }
 }

@@ -1,3 +1,11 @@
 game.homepage:
     path: /game
-    controller: Lib\Game\Http\Controllers\HomeController::indexAction
+    controller: 'game.home.controller'
+    action: 'indexAction'
+    method: GET
+
+game.test:
+    path: /game/test
+    controller: 'game.home.controller'
+    action: 'testAction'
+    method: GET

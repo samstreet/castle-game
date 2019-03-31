@@ -1,3 +1,5 @@
 core.homepage:
     path: /
-    controller: Lib\Core\Http\Controllers\HomeController::indexAction
+    controller: 'core.home.controller'
+    action: 'indexAction'
+    method: GET

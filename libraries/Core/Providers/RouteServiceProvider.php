@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Lib\Core\Providers;
 
-use Lib\Core\Concerns as CoreConcerns;
+use Lib\Core\Http\Controllers\HomeController;
+use Lib\Core\Providers\Concerns as ProviderConcerns;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Silex\ControllerCollection;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -16,21 +16,19 @@ use Symfony\Component\Yaml\Yaml;
  */
 class RouteServiceProvider implements ServiceProviderInterface
 {
-    use CoreConcerns\CanAccessProjectRoot;
+    use ProviderConcerns\RegistersRoutes;
 
     /**
      * @param Container $app
      */
     public function register(Container $app): void
     {
-        $routes = $app['core.config.routes'] = Yaml::parseFile(realpath((__DIR__.'/../config/routes.yaml')));
+        $routes = $app['core.config.routes'] = Yaml::parseFile(realpath((__DIR__ . '/../config/routes.yaml')));
 
-        /** @var ControllerCollection $controllerCollection */
-        $controllerCollection = $app['controllers'];
-        foreach ($routes as $name => $route) {
-            $controllerCollection->match($route['path'], $route['controller'])
-                ->bind($name)
-                ->method($route['method'] ?? 'GET');
-        }
+        $app['core.home.controller'] = function() use ($app){
+            return new HomeController();
+        };
+
+        $this->bindRoutes($routes, $app);
     }
 }

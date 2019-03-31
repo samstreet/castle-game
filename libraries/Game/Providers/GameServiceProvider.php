@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Lib\Game\Providers;
 
+use Lib\Core\Services\TestService;
+use Lib\Game\Http\Controllers\HomeController;
 use Pimple\ServiceProviderInterface;
 use Pimple\Container;
 use Lib\Core\Providers\Concerns as ProviderConcerns;

@@ -10,6 +10,6 @@ use Lib\Game\Providers as GameProviders;
 
 $app = new Application();
 $app->register(new CoreProviders\CoreServiceProvider())
-    ->register(new GameProviders\GameRouteServiceProvider());
+    ->register(new GameProviders\GameServiceProvider());
 
 $app->run();
