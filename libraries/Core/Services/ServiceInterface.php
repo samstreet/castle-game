@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Lib\Core\Services;
 
 /**
- * Class FooService
+ * Interface ServiceInterface
  * @package Lib\Core\Services
  */
-class FooService
+interface ServiceInterface
 {
 
 }

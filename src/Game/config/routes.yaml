@@ -1,0 +1,11 @@
+game.homepage:
+  path: /games
+  controller: 'game.home.controller'
+  action: 'indexAction'
+  method: GET
+
+game.create:
+  path: /games
+  controller: 'game.home.controller'
+  action: 'createAction'
+  method: POST

@@ -8,7 +8,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "": "src/",
+            "App\\": "src/",
             "Lib\\": "libraries/"
         }
     },
@@ -23,15 +23,16 @@
         "symfony/yaml": "4.2.*",
         "symfony/security-bundle": "4.2.*",
         "symfony/config": "4.2.*",
-        "silex/silex": "^2.0"
+        "silex/silex": "^2.0",
+        "doctrine/dbal": "~2.2",
+        "dflydev/doctrine-orm-service-provider": "^2.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2"
     },
     "scripts": {
         "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "cache:clear": "symfony-cmd"
         }
     }
 }

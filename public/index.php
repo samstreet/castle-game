@@ -2,14 +2,18 @@
 
 declare(strict_types=1);
 
-require dirname(__DIR__).'/vendor/autoload.php';
+$loader = require dirname(__DIR__) . '/vendor/autoload.php';
 
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Lib\Core\Application;
 use Lib\Core\Providers as CoreProviders;
-use Lib\Game\Providers as GameProviders;
+use App\Game\Providers as GameProviders;
+
+AnnotationRegistry::registerLoader([$loader, 'loadClass']);
 
 $app = new Application();
-$app->register(new CoreProviders\CoreServiceProvider())
+$app->register(new Silex\Provider\SessionServiceProvider())
+    ->register(new CoreProviders\CoreServiceProvider())
     ->register(new GameProviders\GameServiceProvider());
 
 $app->run();
