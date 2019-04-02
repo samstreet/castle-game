@@ -7,15 +7,25 @@ namespace App\Game\Storage\Entity;
 use Lib\Core\Storage\Entity\Model;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\ORM\Mapping\Table;
+use Ramsey\Uuid\Uuid;
 
 /**
  * Class Building
  * @package App\Game\Storage\Entity
  * @Entity
- * @Table(name="users")
+ * @Table(name="game")
  */
-class User extends Model
+class Game extends Model
 {
+    /**
+     * Game constructor.
+     */
+    public function __construct()
+    {
+        $this->id = (Uuid::uuid4())->toString();
+        $this->createdAt = $this->updatedAt = new \DateTime();
+    }
+
     /**
      * @return array
      */

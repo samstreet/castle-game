@@ -47,6 +47,9 @@
     "doctrine/reflection": {
         "version": "v1.0.0"
     },
+    "paragonie/random_compat": {
+        "version": "v9.99.99"
+    },
     "pimple/pimple": {
         "version": "v3.2.3"
     },
@@ -61,6 +64,9 @@
     },
     "psr/simple-cache": {
         "version": "1.0.1"
+    },
+    "ramsey/uuid": {
+        "version": "3.8.0"
     },
     "silex/silex": {
         "version": "v2.3.0"

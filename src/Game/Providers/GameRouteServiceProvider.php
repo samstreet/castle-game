@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace App\Game\Providers;
 
-use Lib\Core\Providers\Concerns as ProviderConcerns;
 use App\Game\Http\Controllers\GameController;
+use App\Game\Http\Controllers\Api\GameController as APIGameController;
+use Lib\Core\Providers\Concerns as ProviderConcerns;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 use Symfony\Component\Yaml\Yaml;
@@ -34,8 +35,12 @@ class GameRouteServiceProvider implements ServiceProviderInterface
      */
     private function bindControllers(Container $app): void
     {
-        $app['game.home.controller'] = function () {
-            return new GameController();
+        $app['game.home.controller'] = function () use ($app) {
+            return new GameController($app['game.game.service']);
+        };
+
+        $app['game.api.home.controller'] = function () use ($app) {
+            return new APIGameController($app['game.game.service']);
         };
     }
 }

@@ -25,7 +25,8 @@
         "symfony/config": "4.2.*",
         "silex/silex": "^2.0",
         "doctrine/dbal": "~2.2",
-        "dflydev/doctrine-orm-service-provider": "^2.0"
+        "dflydev/doctrine-orm-service-provider": "^2.0",
+        "ramsey/uuid": "^3.8"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2"

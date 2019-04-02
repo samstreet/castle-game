@@ -2,19 +2,21 @@
 
 declare(strict_types=1);
 
-namespace App\Game\Http\Controllers;
+namespace App\Game\Http\Controllers\Api;
 
 use App\Game\Services\Contracts\GameServiceContract;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
- * Class HomeController
- * @package Lib\Core\Http\Controllers
+ * @author Sam Street
  */
 class GameController
 {
-    protected $gameService;
+    /**
+     * @var GameServiceContract
+     */
+    private $gameService;
 
     /**
      * GameController constructor.
@@ -25,12 +27,10 @@ class GameController
         $this->gameService = $gameService;
     }
 
-    /**
-     * @param Request $request
-     * @return JsonResponse
-     */
-    public function indexAction(Request $request): JsonResponse
+
+    public function createAction(Request $request):JsonResponse
     {
-        return new JsonResponse();
+        $game = $this->gameService->makeGame();
+        return new JsonResponse($game ?? null);
     }
 }

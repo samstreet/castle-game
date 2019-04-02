@@ -5,7 +5,7 @@ game.homepage:
   method: GET
 
 game.create:
-  path: /games
-  controller: 'game.home.controller'
+  path: /api/games
+  controller: 'game.api.home.controller'
   action: 'createAction'
   method: POST

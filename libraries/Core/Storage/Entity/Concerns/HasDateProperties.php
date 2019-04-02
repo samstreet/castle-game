@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Lib\Core\Storage\Entity\Concerns;
 
+use Doctrine\ORM\Mapping\Column;
+
 /**
  * Trait HasDateProperties
  * @package Lib\Core\Storage\Entity\Concerns
@@ -11,19 +13,19 @@ namespace Lib\Core\Storage\Entity\Concerns;
 trait HasDateProperties
 {
     /**
-     * @Column(name="created_at", type="datetime")
+     * @Column(name="created_at", nullable=false, type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $createdAt;
+    protected $createdAt;
 
     /**
-     * @Column(name="updated_at", type="datetime")
+     * @Column(name="updated_at", nullable=false, type="datetime", options={"default"="CURRENT_TIMESTAMP"})
      */
-    private $updatedAt;
+    protected $updatedAt;
 
     /**
-     * @Column(name="deleted_at", type="datetime")
+     * @Column(name="deleted_at", nullable=true, type="datetime", options={"default"="NULL"})
      */
-    private $deletedAt;
+    protected $deletedAt = null;
 
     /**
      * @return \DateTime|null

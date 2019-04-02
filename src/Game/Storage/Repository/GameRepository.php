@@ -4,33 +4,48 @@ declare(strict_types=1);
 
 namespace App\Game\Storage\Repository;
 
+use App\Game\Storage\Entity\Game;
+use App\Game\Storage\Repository\Contracts\GameRepositoryContract;
 use Lib\Core\Storage\Entity\Model as Entity;
-use Lib\Core\Storage\Repository\RepositoryInterface;
+use Lib\Core\Storage\Repository\Repository;
 
 /**
  * Class GameRepository
  * @package Lib\Game\Storage\Repository
  */
-class GameRepository implements RepositoryInterface
+class GameRepository extends Repository implements GameRepositoryContract
 {
-    public function __construct()
+    /**
+     * GameRepository constructor.
+     * @param Game $entity
+     */
+    public function __construct(Game $entity)
     {
-        $this->setModel(new Entity());
+        $this->setModel($entity);
     }
 
     /**
      * @inheritDoc
      */
-    public function getModel(): Entity
+    public function findById(int $id): ?Entity
     {
-        // TODO: Implement getModel() method.
+        return $this->getQueryBuilder()
+            ->getEntityManager()
+            ->find(Game::class, $id);
     }
 
     /**
      * @inheritDoc
      */
-    public function setModel(Entity $model): void
+    public function createGame(array $attributes = []): ?Game
     {
-        // TODO: Implement setModel() method.
+        try{
+            $game = new Game();
+            $this->save($game);
+
+            return $game;
+        } catch (\Exception $e) {
+            return null;
+        }
     }
 }

@@ -1,12 +1,14 @@
 <?php
 
+use Doctrine\ORM\Tools\Setup;
+
 require __DIR__.'/vendor/autoload.php';
 
 $app['orm.default_cache'] = 'array';
 
-$newDefaultAnnotationDrivers = array(
-    __DIR__."/src/Game/Storage",
-);
+$newDefaultAnnotationDrivers = [
+    __DIR__."/src/Game/Storage/Entity",
+];
 
 $app['db.options'] = [
     'driver' => 'pdo_sqlite',
@@ -14,7 +16,7 @@ $app['db.options'] = [
 ];
 
 $app['orm.proxies_dir'] = __DIR__ . '/src/Game/Storage/Entity/Proxy';
-$app['orm.auto_generate_proxies'] = $app['debug'];
+$app['orm.auto_generate_proxies'] = false;
 $app['orm.em.options'] = [
     'mappings' => [
         [
@@ -26,7 +28,8 @@ $app['orm.em.options'] = [
     ]
 ];
 
-$config = new \Doctrine\ORM\Configuration();
+$isDevMode = true;
+$config = Setup::createAnnotationMetadataConfiguration([__DIR__."/src"], $isDevMode);
 
 $driverImpl = $config->newDefaultAnnotationDriver($newDefaultAnnotationDrivers);
 $config->setMetadataCacheImpl(new \Doctrine\Common\Cache\ArrayCache());

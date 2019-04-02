@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace Lib\Core\Storage\Entity\Concerns;
 
+use Doctrine\ORM\Mapping\GeneratedValue;
+use Doctrine\ORM\Mapping\Table;
+use Doctrine\ORM\Mapping\Column;
+use Doctrine\ORM\Mapping\Id;
+
 /**
  * Trait HasPropertyID
  * @package Lib\Core\Storage\Entity\Concerns
@@ -11,11 +16,11 @@ namespace Lib\Core\Storage\Entity\Concerns;
 trait HasPropertyID
 {
     /**
-     * @Column(name="id", type="guid")
      * @Id
-     * @GeneratedValue(strategy="IDENTITY")
+     * @Column(name="id", type="guid")
+     * @GeneratedValue(strategy="UUID")
      */
-    private $id;
+    protected $id;
 
     /**
      * @return string

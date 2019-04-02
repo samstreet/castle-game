@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Lib\Core\Services;
 
+use Lib\Core\Storage\Repository\Repository;
 use Lib\Core\Storage\Repository\RepositoryInterface;
 
 /**
@@ -13,15 +14,11 @@ use Lib\Core\Storage\Repository\RepositoryInterface;
 abstract class Service implements ServiceInterface
 {
     /**
-     * The repository.
-     *
      * @var RepositoryInterface
      */
     protected $repository;
 
     /**
-     * Get the Repository.
-     *
      * @return RepositoryInterface|null
      */
     protected function getRepository(): ?RepositoryInterface

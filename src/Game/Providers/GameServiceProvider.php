@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Game\Providers;
 
+use App\Game\Services\GameService;
+use App\Game\Storage\Entity\Building;
+use App\Game\Storage\Entity\Game;
+use App\Game\Storage\Entity\User;
+use App\Game\Storage\Repository\GameRepository;
 use Lib\Core\Concerns as CoreConcerns;
 use Lib\Core\Providers\Concerns as ProviderConcerns;
-use App\Game\Services\GameService;
-use App\Game\Storage\Repository\GameRepository;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -24,7 +27,6 @@ class GameServiceProvider implements ServiceProviderInterface
      * @var array
      */
     protected $provides = [
-        DatabaseServiceProvider::class,
         GameRouteServiceProvider::class
     ];
 
@@ -33,10 +35,10 @@ class GameServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $app)
     {
-        $this->registerProviders($app);
         $this->registerEntities($app);
         $this->registerRepositories($app);
         $this->registerServices($app);
+        $this->registerProviders($app);
     }
 
     /**
@@ -44,7 +46,17 @@ class GameServiceProvider implements ServiceProviderInterface
      */
     private function registerEntities(Container $app): void
     {
+        $app['game.game.entity'] = function() {
+            return new Game();
+        };
 
+        $app['game.building.entity'] = function() {
+            return new Building();
+        };
+
+        $app['game.user.entity'] = function() {
+            return new User();
+        };
     }
 
     /**
@@ -52,8 +64,9 @@ class GameServiceProvider implements ServiceProviderInterface
      */
     private function registerRepositories(Container $app): void
     {
-        $app['game.game.repository'] = function () {
-            return new GameRepository();
+        $queryBuilder = $app['orm.em']->createQueryBuilder();
+        $app['game.game.repository'] = function () use ($app, $queryBuilder) {
+            return (new GameRepository($app['game.game.entity']))->setQueryBuilder($queryBuilder);
         };
     }
 
