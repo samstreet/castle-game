@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Lib\Core\Providers\Concerns;
 
 use Pimple\Container;
+use Silex\Controller;
 use Silex\ControllerCollection;
 
 /**
@@ -19,13 +20,36 @@ trait RegistersRoutes
      */
     protected function bindRoutes(array $routes, Container $app)
     {
-        /** @var ControllerCollection $controllerCollection */
-        $controllerCollection = $app['controllers'];
         foreach ($routes as $name => $route) {
-            $method = strtolower($route['method']);
-            $controllerCollection
-                ->$method($route['path'], [$app[$route['controller']], $route['action']])
-                ->bind($name);
+            [$controllerBinding, $controllerAction] = explode('::', $route['controller']);
+            $method = ($route['method'] ?? ['get']);
+
+            $controller = $app->match($route['path'], [$app[$controllerBinding], $controllerAction])
+                ->bind($name)
+                ->method(
+                    join('|', array_map('strtoupper', $method))
+                );
+
+            $this->applyBeforeMiddleware($controller, $app, $route['before'] ?? []);
         }
+
+    }
+
+    /**
+     * @param Controller $controller
+     * @param Container $app
+     * @param array $beforeMiddleware
+     * @return Controller
+     */
+    private function applyBeforeMiddleware(
+        Controller $controller,
+        Container $app,
+        array $beforeMiddleware = []
+    ): Controller {
+        foreach ($beforeMiddleware as $middleware) {
+            $controller->before($app[$middleware]);
+        }
+
+        return $controller;
     }
 }

@@ -31,4 +31,14 @@ class GameService extends Service implements GameServiceContract
     {
         return $this->getRepository()->createGame($attributes);
     }
+
+    /**
+     * @inheritDoc
+     */
+    public function findGame(string $uuid): ?Game
+    {
+        return $this->getRepository()->findById($uuid);
+    }
+
+
 }

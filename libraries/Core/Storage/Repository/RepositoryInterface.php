@@ -14,10 +14,10 @@ use Lib\Core\Storage\Entity\Model;
 interface RepositoryInterface
 {
     /**
-     * @param int $id
+     * @param string $id
      * @return Model|null
      */
-    public function findById(int $id): ?Model;
+    public function findById(string $id): ?Model;
 
     /**
      * @param Model $model

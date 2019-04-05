@@ -14,15 +14,18 @@ use Doctrine\ORM\Mapping\Table;
  * @Entity
  * @Table(name="buildings")
  */
-class Building extends Model
+abstract class Building extends Model
 {
+    protected $buildingType;
+
     /**
      * @return array
      */
     public function jsonSerialize()
     {
         return [
-            'id' => $this->getId()
+            'id' => $this->getId(),
+            'buildingType' => $this->buildingType
         ];
     }
 }

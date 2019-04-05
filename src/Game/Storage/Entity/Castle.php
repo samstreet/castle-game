@@ -1,17 +1,16 @@
 <?php
 
-namespace Building;
+declare(strict_types=1);
 
-
-use LIB\BuildingAction\BuildingActions;
+namespace App\Game\Storage\Entity;
 
 /**
  * Class Castle
  * @package Building
  */
-class Castle
+class Castle extends Building
 {
-    use BuildingActions;
+    protected $buildingType = 'castle';
 
     /**
      * @var int

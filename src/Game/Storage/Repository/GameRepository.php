@@ -27,7 +27,7 @@ class GameRepository extends Repository implements GameRepositoryContract
     /**
      * @inheritDoc
      */
-    public function findById(int $id): ?Entity
+    public function findById(string $id): ?Entity
     {
         return $this->getQueryBuilder()
             ->getEntityManager()

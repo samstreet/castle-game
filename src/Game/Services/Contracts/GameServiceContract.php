@@ -18,4 +18,10 @@ interface GameServiceContract extends ServiceInterface
      * @return Game|null
      */
     public function makeGame(array $attributes = []): ?Game;
+
+    /**
+     * @param string $uuid
+     * @return Game|null
+     */
+    public function findGame(string $uuid): ?Game;
 }

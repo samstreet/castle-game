@@ -1,22 +1,20 @@
 <?php
 
-namespace Building;
-
-
-use LIB\BuildingAction\BuildingActions;
+namespace App\Game\Storage\Entity;
 
 /**
  * Class House
  * @package Building
  */
-class House
+class House extends Building
 {
-    use BuildingActions;
+    protected $buildingType = 'house';
 
     /**
      * @var int
      */
     private $health = 75;
+
     /**
      * @var int
      */

@@ -13,6 +13,11 @@ use Pimple\Container;
 trait RegistersProviders
 {
     /**
+     * @var array
+     */
+    protected $provides = [];
+
+    /**
      * @param Container $app
      * @return void
      */

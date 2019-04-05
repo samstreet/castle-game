@@ -1,11 +1,10 @@
-game.homepage:
-  path: /games
-  controller: 'game.home.controller'
-  action: 'indexAction'
-  method: GET
-
 game.create:
   path: /api/games
-  controller: 'game.api.home.controller'
-  action: 'createAction'
-  method: POST
+  controller: 'game.api.home.controller::createAction'
+  method: ['post']
+
+game.view:
+  path: /api/games/{uuid}
+  controller: 'game.api.home.controller::viewAction'
+  method: ['get']
+  before: ['middleware.game.exists']

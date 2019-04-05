@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Game\Providers;
 
+use App\Game\Http\Middleware\GameExistsMiddleware;
 use App\Game\Services\GameService;
 use App\Game\Storage\Entity\Building;
 use App\Game\Storage\Entity\Game;
 use App\Game\Storage\Entity\User;
 use App\Game\Storage\Repository\GameRepository;
-use Lib\Core\Concerns as CoreConcerns;
-use Lib\Core\Providers\Concerns as ProviderConcerns;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -18,11 +17,8 @@ use Pimple\ServiceProviderInterface;
  * Class GameServiceProvider
  * @package Lib\Game\Providers
  */
-class GameServiceProvider implements ServiceProviderInterface
+class GameServiceProvider extends GameProvider implements ServiceProviderInterface
 {
-    use ProviderConcerns\RegistersProviders,
-        CoreConcerns\CanAccessProjectRoot;
-
     /**
      * @var array
      */
@@ -31,14 +27,34 @@ class GameServiceProvider implements ServiceProviderInterface
     ];
 
     /**
+     * @var array
+     */
+    protected $middleware = [
+        'middleware.game.exists' => GameExistsMiddleware::class
+    ];
+
+    /**
      * @inheritdoc
      */
     public function register(Container $app)
     {
+        $this->registerMiddleware($app);
         $this->registerEntities($app);
         $this->registerRepositories($app);
         $this->registerServices($app);
         $this->registerProviders($app);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function registerMiddleware(Container $app): void
+    {
+        foreach ($this->middleware as $binding => $middleware) {
+            $app[$binding] = function () use ($app, $middleware) {
+                return (new $middleware());
+            };
+        }
     }
 
     /**

@@ -1,5 +1,3 @@
 core.homepage:
     path: /
-    controller: 'core.home.controller'
-    action: 'indexAction'
-    method: GET
+    controller: 'core.home.controller::indexAction'

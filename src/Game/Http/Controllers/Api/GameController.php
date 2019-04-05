@@ -27,10 +27,21 @@ class GameController
         $this->gameService = $gameService;
     }
 
-
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function createAction(Request $request):JsonResponse
     {
-        $game = $this->gameService->makeGame();
-        return new JsonResponse($game ?? null);
+        return new JsonResponse($this->gameService->makeGame() ?? null);
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function viewAction(Request $request):JsonResponse
+    {
+        return new JsonResponse($this->gameService->findGame($request->attributes->get('uuid')) ?? null);
     }
 }
