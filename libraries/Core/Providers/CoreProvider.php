@@ -6,6 +6,7 @@ namespace Lib\Core\Providers;
 
 use Lib\Core\Concerns as CoreConcerns;
 use Lib\Core\Providers\Concerns as ProviderConcerns;
+use Pimple\Container;
 
 /**
  * Class GameProvider
@@ -17,4 +18,8 @@ abstract class CoreProvider
         CoreConcerns\CanAccessProjectRoot,
         ProviderConcerns\RegistersMiddleware;
 
+    /**
+     * @param Container $app
+     */
+    abstract public function register(Container $app): void;
 }

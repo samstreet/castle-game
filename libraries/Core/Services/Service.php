@@ -6,6 +6,7 @@ namespace Lib\Core\Services;
 
 use Lib\Core\Storage\Repository\Repository;
 use Lib\Core\Storage\Repository\RepositoryInterface;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
  * Class Service
@@ -17,6 +18,29 @@ abstract class Service implements ServiceInterface
      * @var RepositoryInterface
      */
     protected $repository;
+
+    /**
+     * @var Session
+     */
+    protected $session;
+
+    /**
+     * @return mixed
+     */
+    public function getSession(): Session
+    {
+        return $this->session;
+    }
+
+    /**
+     * @param Session $session
+     * @return Service
+     */
+    public function setSession(Session $session): self
+    {
+        $this->session = $session;
+        return $this;
+    }
 
     /**
      * @return RepositoryInterface|null

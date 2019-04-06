@@ -14,4 +14,8 @@ $app->register(new Silex\Provider\SessionServiceProvider())
     ->register(new CoreProviders\CoreServiceProvider())
     ->register(new GameProviders\GameServiceProvider());
 
+$app->before(function (\Symfony\Component\HttpFoundation\Request $request) {
+    $request->getSession()->start();
+});
+
 $app->run();

@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Game\Providers;
 
+use App\Building\Providers as BuildingProviders;
 use App\Game\Http\Middleware\GameExistsMiddleware;
 use App\Game\Services\GameService;
-use App\Game\Storage\Entity\Building;
-use App\Game\Storage\Entity\Game;
-use App\Game\Storage\Entity\User;
+use App\Game\Storage\Entity;
 use App\Game\Storage\Repository\GameRepository;
+use Lib\Core\Providers\CoreProvider;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
 
@@ -17,12 +17,13 @@ use Pimple\ServiceProviderInterface;
  * Class GameServiceProvider
  * @package Lib\Game\Providers
  */
-class GameServiceProvider extends GameProvider implements ServiceProviderInterface
+class GameServiceProvider extends CoreProvider implements ServiceProviderInterface
 {
     /**
      * @var array
      */
     protected $provides = [
+        BuildingProviders\BuildingServiceProvider::class,
         GameRouteServiceProvider::class
     ];
 
@@ -36,7 +37,7 @@ class GameServiceProvider extends GameProvider implements ServiceProviderInterfa
     /**
      * @inheritdoc
      */
-    public function register(Container $app)
+    public function register(Container $app): void
     {
         $this->registerMiddleware($app);
         $this->registerEntities($app);
@@ -63,15 +64,23 @@ class GameServiceProvider extends GameProvider implements ServiceProviderInterfa
     private function registerEntities(Container $app): void
     {
         $app['game.game.entity'] = function() {
-            return new Game();
+            return new Entity\Game();
         };
 
-        $app['game.building.entity'] = function() {
-            return new Building();
+        $app['game.castle.entity'] = function() {
+            return new Entity\Castle();
+        };
+
+        $app['game.house.entity'] = function() {
+            return new Entity\House();
+        };
+
+        $app['game.farm.entity'] = function() {
+            return new Entity\Farm();
         };
 
         $app['game.user.entity'] = function() {
-            return new User();
+            return new Entity\User();
         };
     }
 
@@ -92,7 +101,8 @@ class GameServiceProvider extends GameProvider implements ServiceProviderInterfa
     private function registerServices(Container $app): void
     {
         $app['game.game.service'] = function () use ($app) {
-            return new GameService($app['game.game.repository']);
+            return (new GameService($app['game.game.repository'], $app['game.building.service']))
+                ->setSession($app['session']);
         };
     }
 }

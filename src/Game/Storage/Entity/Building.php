@@ -16,6 +16,9 @@ use Doctrine\ORM\Mapping\Table;
  */
 abstract class Building extends Model
 {
+    /**
+     * @var string
+     */
     protected $buildingType;
 
     /**

@@ -8,3 +8,9 @@ game.view:
   controller: 'game.api.home.controller::viewAction'
   method: ['get']
   before: ['middleware.game.exists']
+
+game.attack:
+  path: /api/games/{uuid}/attack
+  controller: 'game.api.home.controller::viewAction'
+  method: ['get']
+  before: ['middleware.game.exists']
