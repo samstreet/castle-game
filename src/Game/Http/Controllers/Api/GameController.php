@@ -44,4 +44,20 @@ class GameController
     {
         return new JsonResponse($this->gameService->findGame($request->attributes->get('uuid')) ?? null);
     }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function attackAction(Request $request):JsonResponse
+    {
+        $game = $this->gameService->findGame($request->attributes->get('uuid'));
+        $canAttack = $this->gameService->canAttack($game);
+
+        if($canAttack){
+            $this->gameService->attack($game);
+        }
+
+        return new JsonResponse();
+    }
 }

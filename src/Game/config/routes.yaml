@@ -11,6 +11,6 @@ game.view:
 
 game.attack:
   path: /api/games/{uuid}/attack
-  controller: 'game.api.home.controller::viewAction'
-  method: ['get']
+  controller: 'game.api.home.controller::attackAction'
+  method: ['post']
   before: ['middleware.game.exists']

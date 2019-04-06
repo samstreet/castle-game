@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Building\Services;
 
 use App\Building\Services\Contracts\BuildingServiceContract;
+use App\Game\Storage\Entity\Building;
 use App\Game\Storage\Entity\Castle;
 use App\Game\Storage\Entity\Farm;
 use App\Game\Storage\Entity\Game;
@@ -47,5 +48,18 @@ class BuildingService extends Service implements BuildingServiceContract
         }
 
         return $buildings;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function hitBuilding(Building $building): Building
+    {
+        $isHit = rand(1, 10) === 1;
+        if($isHit){
+            $building->setHealth(($building->getHealth() - $building->getDamage()));
+        }
+
+        return $building;
     }
 }

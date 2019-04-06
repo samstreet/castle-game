@@ -15,11 +15,36 @@ class Farm extends Building
     /**
      * @var int
      */
-    private $health = 50;
+    protected $health = 50;
 
     /**
      * @var int
      */
-    private $damage = 25;
+    protected $damage = 25;
 
+    /**
+     * @param int $health
+     * @return Building
+     */
+    public function setHealth(int $health): Building
+    {
+        $this->health = $health;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHealth(): int
+    {
+        return $this->health;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDamage(): int
+    {
+        return $this->damage;
+    }
 }

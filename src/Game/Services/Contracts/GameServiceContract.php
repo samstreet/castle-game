@@ -24,4 +24,16 @@ interface GameServiceContract extends ServiceInterface
      * @return Game|null
      */
     public function findGame(string $uuid): ?Game;
+
+    /**
+     * @param Game $game
+     * @return bool
+     */
+    public function attack(Game $game): bool;
+
+    /**
+     * @param Game $game
+     * @return bool
+     */
+    public function canAttack(Game $game): bool;
 }

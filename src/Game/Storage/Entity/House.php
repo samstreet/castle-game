@@ -13,10 +13,36 @@ class House extends Building
     /**
      * @var int
      */
-    private $health = 75;
+    protected $health = 75;
 
     /**
      * @var int
      */
-    private $damage = 20;
+    protected $damage = 20;
+
+    /**
+     * @param int $health
+     * @return Building
+     */
+    public function setHealth(int $health): Building
+    {
+        $this->health = $health;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHealth(): int
+    {
+        return $this->health;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDamage(): int
+    {
+        return $this->damage;
+    }
 }

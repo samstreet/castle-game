@@ -15,9 +15,35 @@ class Castle extends Building
     /**
      * @var int
      */
-    private $health = 100;
+    protected $health = 100;
     /**
      * @var int
      */
-    private $damage = 10;
+    protected $damage = 10;
+
+    /**
+     * @param int $health
+     * @return Building
+     */
+    public function setHealth(int $health): Building
+    {
+        $this->health = $health;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getHealth(): int
+    {
+        return $this->health;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDamage(): int
+    {
+        return $this->damage;
+    }
 }
