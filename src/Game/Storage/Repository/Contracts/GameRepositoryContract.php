@@ -14,8 +14,7 @@ use Lib\Core\Storage\Repository\RepositoryInterface;
 interface GameRepositoryContract extends RepositoryInterface
 {
     /**
-     * @param array $attributes
      * @return Game|null
      */
-    public function createGame(array $attributes = []): ?Game;
+    public function createGame(): ?Game;
 }

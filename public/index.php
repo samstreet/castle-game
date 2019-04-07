@@ -7,6 +7,7 @@ $loader = require dirname(__DIR__) . '/vendor/autoload.php';
 use Lib\Core\Application;
 use Lib\Core\Providers as CoreProviders;
 use App\Game\Providers as GameProviders;
+use Symfony\Component\HttpFoundation\Request;
 
 $app = new Application();
 $app->register(new Silex\Provider\SessionServiceProvider())
@@ -14,7 +15,7 @@ $app->register(new Silex\Provider\SessionServiceProvider())
     ->register(new CoreProviders\CoreServiceProvider())
     ->register(new GameProviders\GameServiceProvider());
 
-$app->before(function (\Symfony\Component\HttpFoundation\Request $request) {
+$app->before(function (Request $request) {
     $request->getSession()->start();
 });
 

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Game\Services;
 
-use App\Building\Services\Contracts\BuildingServiceContract;
+use App\Building\Services\Contracts as BuildingContracts;
 use App\Game\Services\Contracts\GameServiceContract;
 use App\Game\Storage\Entity\Building;
+use App\Game\Storage\Entity\Castle;
+use App\Game\Storage\Entity\Farm;
 use App\Game\Storage\Entity\Game;
-use App\Game\Storage\Repository\Contracts;
+use App\Game\Storage\Entity\House;
+use App\Game\Storage\Repository\Contracts as GameContracts;
 use Doctrine\Common\Collections\ArrayCollection;
 use Lib\Core\Services\Service;
 
@@ -19,17 +22,19 @@ use Lib\Core\Services\Service;
 class GameService extends Service implements GameServiceContract
 {
     /**
-     * @var BuildingServiceContract
+     * @var BuildingContracts\BuildingServiceContract
      */
     private $buildingService;
 
     /**
      * GameService constructor.
-     * @param Contracts\GameRepositoryContract $gameRepository
-     * @param BuildingServiceContract $buildingService
+     * @param GameContracts\GameRepositoryContract $gameRepository
+     * @param BuildingContracts\BuildingServiceContract $buildingService
      */
-    public function __construct(Contracts\GameRepositoryContract $gameRepository, BuildingServiceContract $buildingService)
-    {
+    public function __construct(
+        GameContracts\GameRepositoryContract $gameRepository,
+        BuildingContracts\BuildingServiceContract $buildingService
+    ) {
         $this->setRepository($gameRepository);
         $this->buildingService = $buildingService;
     }
@@ -37,10 +42,10 @@ class GameService extends Service implements GameServiceContract
     /**
      * @inheritDoc
      */
-    public function makeGame(array $attributes = []): ?Game
+    public function makeGame(): ?Game
     {
         /** @var Game|null $game */
-        if($game = $this->getRepository()->createGame($attributes)){
+        if ($game = $this->getRepository()->createGame()) {
             $game = $this->buildingService->attachBuildingsToGame($game, new ArrayCollection());
             $this->session->set("game.{$game->getId()}", $game);
         }
@@ -53,7 +58,7 @@ class GameService extends Service implements GameServiceContract
      */
     public function findGame(string $uuid): ?Game
     {
-        if($game = $this->session->get("game.{$uuid}")){
+        if ($game = $this->session->get("game.{$uuid}")) {
             return $game;
         }
 
@@ -65,9 +70,13 @@ class GameService extends Service implements GameServiceContract
      */
     public function attack(Game $game): bool
     {
-        if(!$this->canAttack($game)){
+        if (!$this->canAttack($game)) {
             return false;
         }
+
+        $selectedBuilding =  $this->buildingService->selectBuilding($game->getBuildings());
+        $hitBuilding = $this->buildingService->hitBuilding($selectedBuilding);
+        dd($hitBuilding);
     }
 
     /**
@@ -76,12 +85,45 @@ class GameService extends Service implements GameServiceContract
     public function canAttack(Game $game): bool
     {
         /** @var Building $building */
-        $buildings = $game->getBuildings()->filter(function(Building $building){
+        $buildings = $game->getBuildings()->filter(function (Building $building) {
             return $building->getHealth() > 0;
         });
 
         return !$buildings->isEmpty();
     }
 
+    /**
+     * @inheritDoc
+     */
+    public function getStatusForGame(Game $game): array
+    {
+        $castleStatus = $this->filterBuildingByType($game->getBuildings(), Castle::class)->toArray();
+        $farmsStatus = $this->filterBuildingByType($game->getBuildings(), Farm::class);
+        $houseStatus = $this->filterBuildingByType($game->getBuildings(), House::class);
+        $canBeAttacked = $this->canAttack($game);
 
+        return [
+            'status' => $canBeAttacked ? 'ongoing' : 'finished',
+            'attackable' => $canBeAttacked,
+            'castle' => $castleStatus,
+            'farms' => [
+                'remaining' => $farmsStatus->count()
+            ],
+            'houses' => [
+                'remaining' => $houseStatus->count()
+            ]
+        ];
+    }
+
+    /**
+     * @param ArrayCollection $buildings
+     * @param $type
+     * @return ArrayCollection
+     */
+    private function filterBuildingByType(ArrayCollection $buildings, $type): ArrayCollection
+    {
+        return $buildings->filter(function (Building $building) use ($type) {
+            return $building instanceof $type;
+        });
+    }
 }

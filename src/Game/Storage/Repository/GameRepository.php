@@ -6,6 +6,7 @@ namespace App\Game\Storage\Repository;
 
 use App\Game\Storage\Entity\Game;
 use App\Game\Storage\Repository\Contracts\GameRepositoryContract;
+use Exception;
 use Lib\Core\Storage\Entity\Model as Entity;
 use Lib\Core\Storage\Repository\Repository;
 
@@ -37,14 +38,14 @@ class GameRepository extends Repository implements GameRepositoryContract
     /**
      * @inheritDoc
      */
-    public function createGame(array $attributes = []): ?Game
+    public function createGame(): ?Game
     {
         try{
             $game = new Game();
-            $this->save($game);
-
+            // if we were considering saving game state, this is where we would start
+            // $this->save($game);
             return $game;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return null;
         }
     }

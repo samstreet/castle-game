@@ -69,10 +69,7 @@ abstract class Repository implements RepositoryInterface
 
             return true;
         } catch (ORMException $exception) {
-            dd($exception);
             return false;
-        } catch (\Exception $exception) {
-            dd($exception);
         }
     }
 

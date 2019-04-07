@@ -118,12 +118,6 @@ class GameServiceTest extends TestCase
         $game = (new Game())->setBuildings(new ArrayCollection([
             new Castle(),
             new Farm(),
-            new Farm(),
-            new Farm(),
-            new Farm(),
-            new House(),
-            new House(),
-            new House(),
             new House(),
         ]));
 
@@ -151,5 +145,61 @@ class GameServiceTest extends TestCase
         ]));
 
         $this->assertFalse($service->canAttack($game));
+    }
+
+    /**
+     * @covers GameService::getStatusForGame()
+     */
+    public function testGetStatusForGamePopulatesArrayCorrectlyWhenGameIsOngoing()
+    {
+        $service = new GameService($this->gameRepository, $this->buildingService);
+        $service->setSession($this->session);
+
+        $game = (new Game())->setBuildings(new ArrayCollection([
+            (new Castle())->setHealth(0),
+            (new Farm())->setHealth(10),
+            (new House())->setHealth(50),
+        ]));
+
+        $status = $service->getStatusForGame($game);
+
+        $this->assertIsArray($status);
+        $this->assertArrayHasKey('castle', $status);
+        $this->assertArrayHasKey('houses', $status);
+        $this->assertArrayHasKey('farms', $status);
+        $this->assertArrayHasKey('remaining', $status['farms']);
+        $this->assertArrayHasKey('remaining', $status['houses']);
+        $this->assertArrayHasKey('status', $status);
+        $this->assertArrayHasKey('attackable', $status);
+        $this->assertTrue($status['attackable'] === true);
+        $this->assertTrue($status['status'] === 'ongoing');
+    }
+
+    /**
+     * @covers GameService::getStatusForGame()
+     */
+    public function testGetStatusForGamePopulatesArrayCorrectlyWhenGameIsNotAttackable()
+    {
+        $service = new GameService($this->gameRepository, $this->buildingService);
+        $service->setSession($this->session);
+
+        $game = (new Game())->setBuildings(new ArrayCollection([
+            (new Castle())->setHealth(0),
+            (new Farm())->setHealth(0),
+            (new House())->setHealth(0),
+        ]));
+
+        $status = $service->getStatusForGame($game);
+
+        $this->assertIsArray($status);
+        $this->assertArrayHasKey('castle', $status);
+        $this->assertArrayHasKey('houses', $status);
+        $this->assertArrayHasKey('farms', $status);
+        $this->assertArrayHasKey('remaining', $status['farms']);
+        $this->assertArrayHasKey('remaining', $status['houses']);
+        $this->assertArrayHasKey('status', $status);
+        $this->assertArrayHasKey('attackable', $status);
+        $this->assertTrue($status['attackable'] === false);
+        $this->assertTrue($status['status'] === 'finished');
     }
 }

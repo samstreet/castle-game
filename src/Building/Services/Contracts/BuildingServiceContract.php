@@ -34,4 +34,10 @@ interface BuildingServiceContract extends ServiceInterface
      * @return Building
      */
     public function hitBuilding(Building $building): Building;
+
+    /**
+     * @param ArrayCollection $buildings
+     * @return Building
+     */
+    public function selectBuilding(ArrayCollection $buildings): Building;
 }

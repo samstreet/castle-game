@@ -42,7 +42,9 @@ class GameController
      */
     public function viewAction(Request $request):JsonResponse
     {
-        return new JsonResponse($this->gameService->findGame($request->attributes->get('uuid')) ?? null);
+        $game = $this->gameService->findGame($request->attributes->get('uuid'));
+        $status = $this->gameService->getStatusForGame($game);
+        return new JsonResponse($status);
     }
 
     /**

@@ -51,8 +51,8 @@ abstract class Building extends Model
     public function jsonSerialize()
     {
         return [
-            'id' => $this->getId(),
-            'buildingType' => $this->buildingType
+            'buildingType' => $this->buildingType,
+            'health' => $this->getHealth()
         ];
     }
 }

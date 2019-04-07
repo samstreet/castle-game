@@ -14,10 +14,9 @@ use Lib\Core\Services\ServiceInterface;
 interface GameServiceContract extends ServiceInterface
 {
     /**
-     * @param array $attributes
      * @return Game|null
      */
-    public function makeGame(array $attributes = []): ?Game;
+    public function makeGame(): ?Game;
 
     /**
      * @param string $uuid
@@ -36,4 +35,10 @@ interface GameServiceContract extends ServiceInterface
      * @return bool
      */
     public function canAttack(Game $game): bool;
+
+    /**
+     * @param Game $game
+     * @return array
+     */
+    public function getStatusForGame(Game $game): array;
 }
