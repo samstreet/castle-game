@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 $loader = require dirname(__DIR__) . '/vendor/autoload.php';
 
+use App\Game\Providers as GameProviders;
 use Lib\Core\Application;
 use Lib\Core\Providers as CoreProviders;
-use App\Game\Providers as GameProviders;
 use Symfony\Component\HttpFoundation\Request;
 
 $app = new Application();

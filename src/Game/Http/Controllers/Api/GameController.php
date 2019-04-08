@@ -6,6 +6,7 @@ namespace App\Game\Http\Controllers\Api;
 
 use App\Game\Services\Contracts\GameServiceContract;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -32,18 +33,19 @@ class GameController
      * @param Request $request
      * @return JsonResponse
      */
-    public function createAction(Request $request):JsonResponse
+    public function createAction(Request $request): JsonResponse
     {
         $game = $this->gameService->makeGame();
         $status = $this->gameService->getStatusForGame($game);
-        return new JsonResponse( $game ? $status : null, $game ? Response::HTTP_CREATED : Response::HTTP_INTERNAL_SERVER_ERROR);
+        return new JsonResponse($game ? $status : null,
+            $game ? Response::HTTP_CREATED : Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     /**
      * @param Request $request
      * @return JsonResponse
      */
-    public function viewAction(Request $request):JsonResponse
+    public function viewAction(Request $request): JsonResponse
     {
         $game = $this->gameService->findGame($request->attributes->get('uuid'));
         $status = $this->gameService->getStatusForGame($game);
@@ -54,9 +56,28 @@ class GameController
      * @param Request $request
      * @return JsonResponse
      */
-    public function attackAction(Request $request):JsonResponse
+    public function attackAction(Request $request): JsonResponse
     {
         $game = $this->gameService->findGame($request->attributes->get('uuid'));
+        if (!$this->gameService->canAttack($game)) {
+            return new JsonResponse($this->gameService->getStatusForGame($game), Response::HTTP_BAD_REQUEST);
+        }
+
         return new JsonResponse($this->gameService->attack($game));
+    }
+
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function allAction(Request $request): JsonResponse
+    {
+        $filters = new ParameterBag($request->query->all());
+        $games = $this->gameService->allAvailableSessions($filters);
+
+        return new JsonResponse([
+            'count' => $games->count(),
+            'games' => $games->toArray()
+        ]);
     }
 }

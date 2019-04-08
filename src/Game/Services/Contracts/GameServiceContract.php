@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Game\Services\Contracts;
 
 use App\Game\Storage\Entity\Game;
+use Doctrine\Common\Collections\ArrayCollection;
 use Lib\Core\Services\ServiceInterface;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Interface GameServiceContract
@@ -26,9 +28,9 @@ interface GameServiceContract extends ServiceInterface
 
     /**
      * @param Game $game
-     * @return array
+     * @return array|null
      */
-    public function attack(Game $game): array;
+    public function attack(Game $game): ?array;
 
     /**
      * @param Game $game
@@ -41,4 +43,10 @@ interface GameServiceContract extends ServiceInterface
      * @return array
      */
     public function getStatusForGame(Game $game): array;
+
+    /**
+     * @param ParameterBag $filters
+     * @return ArrayCollection
+     */
+    public function allAvailableSessions(ParameterBag $filters): ArrayCollection;
 }

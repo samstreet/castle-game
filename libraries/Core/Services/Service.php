@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Lib\Core\Services;
 
-use Lib\Core\Storage\Repository\Repository;
 use Lib\Core\Storage\Repository\RepositoryInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 

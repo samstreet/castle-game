@@ -6,7 +6,6 @@ namespace Lib\Core\Providers\Concerns;
 
 use Pimple\Container;
 use Silex\Controller;
-use Silex\ControllerCollection;
 
 /**
  * Trait RegistersRoutes

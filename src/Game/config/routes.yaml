@@ -3,6 +3,12 @@ game.create:
   controller: 'game.api.home.controller::createAction'
   method: ['post']
 
+game.all:
+  path: /api/games
+  controller: 'game.api.home.controller::allAction'
+  method: ['get']
+  before: ['middleware.game.valid.filters']
+
 game.view:
   path: /api/games/{uuid}
   controller: 'game.api.home.controller::viewAction'

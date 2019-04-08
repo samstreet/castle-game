@@ -6,8 +6,6 @@ namespace App\Game\Storage\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Lib\Core\Storage\Entity\Model;
-use Doctrine\ORM\Mapping\Entity;
-use Doctrine\ORM\Mapping\Table;
 use Ramsey\Uuid\Uuid;
 
 /**

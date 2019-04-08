@@ -14,6 +14,7 @@ use App\Game\Storage\Entity\House;
 use App\Game\Storage\Repository\Contracts as GameContracts;
 use Doctrine\Common\Collections\ArrayCollection;
 use Lib\Core\Services\Service;
+use Symfony\Component\HttpFoundation\ParameterBag;
 
 /**
  * Class GameService
@@ -68,10 +69,10 @@ class GameService extends Service implements GameServiceContract
     /**
      * @inheritDoc
      */
-    public function attack(Game $game): array
+    public function attack(Game $game): ?array
     {
         if (!$this->canAttack($game)) {
-            return [];
+            return null;
         }
 
         $selectedBuilding =  $this->buildingService->selectBuilding($game->getBuildings());
@@ -120,6 +121,7 @@ class GameService extends Service implements GameServiceContract
         $canBeAttacked = $this->canAttack($game);
 
         return [
+            'id' => $game->getId(),
             'status' => $canBeAttacked != [] ? 'ongoing' : 'finished',
             'attackable' => $canBeAttacked,
             'castle' => $castleStatus,
@@ -133,6 +135,20 @@ class GameService extends Service implements GameServiceContract
     }
 
     /**
+     * @inheritDoc
+     */
+    public function allAvailableSessions(ParameterBag $filters): ArrayCollection
+    {
+        $games = $this->filteredGamesFromParameters(new ArrayCollection($this->session->all()), $filters);
+        $sessions = [];
+        foreach ($games->toArray() as $game) {
+            $sessions[] = $this->getStatusForGame($game);
+        }
+
+        return new ArrayCollection($sessions);
+    }
+
+    /**
      * @param ArrayCollection $buildings
      * @param $type
      * @return ArrayCollection
@@ -142,5 +158,21 @@ class GameService extends Service implements GameServiceContract
         return $buildings->filter(function (Building $building) use ($type) {
             return $building instanceof $type;
         });
+    }
+
+    /**
+     * @param ArrayCollection $games
+     * @param ParameterBag $filters
+     * @return ArrayCollection
+     */
+    private function filteredGamesFromParameters(ArrayCollection $games, ParameterBag $filters): ArrayCollection
+    {
+        if($filters->has('status')) {
+            return $games->filter(function($game) use ($filters) {
+                return $this->getStatusForGame($game)['status'] == $filters->get('status');
+            });
+        }
+
+        return $games;
     }
 }

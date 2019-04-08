@@ -202,4 +202,44 @@ class GameServiceTest extends TestCase
         $this->assertTrue($status['attackable'] === false);
         $this->assertTrue($status['status'] === 'finished');
     }
+
+    /**
+     * @covers \App\Game\Services\GameService::attack
+     */
+    public function testAttackMethodAllowsAttackingWhenGameIsOngoing()
+    {
+        $service = new GameService($this->gameRepository, $this->buildingService);
+        $service->setSession($this->session);
+
+        $game = new Game();
+        $game->setBuildings(new ArrayCollection([
+            new Castle,
+            new House,
+            new Farm
+        ]));
+
+        $attackOutcome = $service->attack($game);
+        $this->assertIsArray($attackOutcome);
+        $this->assertArrayHasKey('attack', $attackOutcome);
+        $this->assertArrayHasKey('status', $attackOutcome);
+        $this->assertArrayHasKey('building', $attackOutcome['attack']);
+        $this->assertArrayHasKey('hit', $attackOutcome['attack']);
+    }
+
+    /**
+     * @covers \App\Game\Services\GameService::attack
+     */
+    public function testAttackMethodDoesntAllowAttackingWhenGameIsEnded()
+    {
+        $service = new GameService($this->gameRepository, $this->buildingService);
+        $service->setSession($this->session);
+
+        $game = new Game();
+        $game->setBuildings(new ArrayCollection([
+            (new Castle)->setHealth(0)
+        ]));
+
+        $attackOutcome = $service->attack($game);
+        $this->assertNull($attackOutcome);
+    }
 }

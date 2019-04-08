@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace Lib\Core\Storage\Entity\Concerns;
 
-use Doctrine\ORM\Mapping\GeneratedValue;
-use Doctrine\ORM\Mapping\Table;
-use Doctrine\ORM\Mapping\Column;
-use Doctrine\ORM\Mapping\Id;
-
 /**
  * Trait HasPropertyID
  * @package Lib\Core\Storage\Entity\Concerns

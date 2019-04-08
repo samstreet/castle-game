@@ -6,6 +6,7 @@ namespace App\Game\Providers;
 
 use App\Building\Providers as BuildingProviders;
 use App\Game\Http\Middleware\GameExistsMiddleware;
+use App\Game\Http\Middleware\ValidFilteringParameters;
 use App\Game\Services\GameService;
 use App\Game\Storage\Entity;
 use App\Game\Storage\Repository\GameRepository;
@@ -31,7 +32,8 @@ class GameServiceProvider extends CoreProvider implements ServiceProviderInterfa
      * @var array
      */
     protected $middleware = [
-        'middleware.game.exists' => GameExistsMiddleware::class
+        'middleware.game.exists' => GameExistsMiddleware::class,
+        'middleware.game.valid.filters' => ValidFilteringParameters::class,
     ];
 
     /**

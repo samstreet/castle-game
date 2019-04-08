@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Game\Providers;
 
-use App\Game\Http\Controllers\GameController;
 use App\Game\Http\Controllers\Api\GameController as APIGameController;
+use App\Game\Http\Controllers\GameController;
 use Lib\Core\Providers\Concerns as ProviderConcerns;
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;

@@ -6,8 +6,6 @@ namespace Lib\Core\Providers;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class CoreServiceProvider

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Lib\Core\Storage\Entity;
 
+use JsonSerializable;
 use Lib\Core\Storage\Entity\Concerns;
-use \JsonSerializable;
-use Doctrine\ORM\Mapping\Entity;
 
 /**
  * Class Model

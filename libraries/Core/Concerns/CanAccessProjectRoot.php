@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Lib\Core\Concerns;
 
-use Symfony\Component\HttpFoundation\Session\Session;
-
 /**
  * Trait CanAccessProjectRoot
  */
