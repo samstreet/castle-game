@@ -39,7 +39,7 @@ class Game extends Model
     public function jsonSerialize()
     {
         return [
-            'id' => $this->getId()
+            'id' => $this->getId(),
         ];
     }
 

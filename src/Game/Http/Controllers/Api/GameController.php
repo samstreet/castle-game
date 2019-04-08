@@ -7,6 +7,7 @@ namespace App\Game\Http\Controllers\Api;
 use App\Game\Services\Contracts\GameServiceContract;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Sam Street
@@ -33,7 +34,9 @@ class GameController
      */
     public function createAction(Request $request):JsonResponse
     {
-        return new JsonResponse($this->gameService->makeGame() ?? null);
+        $game = $this->gameService->makeGame();
+        $status = $this->gameService->getStatusForGame($game);
+        return new JsonResponse( $game ? $status : null, $game ? Response::HTTP_CREATED : Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 
     /**
@@ -54,12 +57,6 @@ class GameController
     public function attackAction(Request $request):JsonResponse
     {
         $game = $this->gameService->findGame($request->attributes->get('uuid'));
-        $canAttack = $this->gameService->canAttack($game);
-
-        if($canAttack){
-            $this->gameService->attack($game);
-        }
-
-        return new JsonResponse();
+        return new JsonResponse($this->gameService->attack($game));
     }
 }

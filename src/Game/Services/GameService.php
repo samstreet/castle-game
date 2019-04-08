@@ -68,15 +68,25 @@ class GameService extends Service implements GameServiceContract
     /**
      * @inheritDoc
      */
-    public function attack(Game $game): bool
+    public function attack(Game $game): array
     {
         if (!$this->canAttack($game)) {
-            return false;
+            return [];
         }
 
         $selectedBuilding =  $this->buildingService->selectBuilding($game->getBuildings());
-        $hitBuilding = $this->buildingService->hitBuilding($selectedBuilding);
-        dd($hitBuilding);
+        if($isHit = (rand(1, 10)) > 1) {
+            $this->buildingService->hitBuilding($selectedBuilding);
+        }
+
+        $status = $this->getStatusForGame($game);
+        return [
+            'attack' => [
+                'building' => $selectedBuilding->getBuildingType(),
+                'hit' => $isHit
+            ],
+            'status' => $status
+        ];
     }
 
     /**
@@ -98,12 +108,19 @@ class GameService extends Service implements GameServiceContract
     public function getStatusForGame(Game $game): array
     {
         $castleStatus = $this->filterBuildingByType($game->getBuildings(), Castle::class)->toArray();
-        $farmsStatus = $this->filterBuildingByType($game->getBuildings(), Farm::class);
-        $houseStatus = $this->filterBuildingByType($game->getBuildings(), House::class);
+
+        $farmsStatus = $this->filterBuildingByType($game->getBuildings(), Farm::class)->filter(function(Farm $farm) {
+            return $farm->getHealth() > 0;
+        });
+
+        $houseStatus = $this->filterBuildingByType($game->getBuildings(), House::class)->filter(function(House $house) {
+            return $house->getHealth() > 0;
+        });
+
         $canBeAttacked = $this->canAttack($game);
 
         return [
-            'status' => $canBeAttacked ? 'ongoing' : 'finished',
+            'status' => $canBeAttacked != [] ? 'ongoing' : 'finished',
             'attackable' => $canBeAttacked,
             'castle' => $castleStatus,
             'farms' => [

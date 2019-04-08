@@ -26,9 +26,9 @@ interface GameServiceContract extends ServiceInterface
 
     /**
      * @param Game $game
-     * @return bool
+     * @return array
      */
-    public function attack(Game $game): bool;
+    public function attack(Game $game): array;
 
     /**
      * @param Game $game

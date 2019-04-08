@@ -55,12 +55,7 @@ class BuildingService extends Service implements BuildingServiceContract
      */
     public function hitBuilding(Building $building): Building
     {
-        $isHit = (rand(1, 10)) > 1;
-        if($isHit){
-            $building->setHealth(($building->getHealth() - $building->getDamage()));
-        }
-
-        return $building;
+        return $building->setHealth(($building->getHealth() - $building->getDamage()));
     }
 
     /**
