@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Building\Services;
 
+use App\Building\Concerns as BuildingConcerns;
 use App\Building\Services\Contracts\BuildingServiceContract;
 use App\Game\Storage\Entity\Building;
 use App\Game\Storage\Entity\Castle;
@@ -19,6 +20,7 @@ use Lib\Core\Services\Service;
  */
 class BuildingService extends Service implements BuildingServiceContract
 {
+    use BuildingConcerns\CanFilterBuildings;
     /**
      * @inheritDoc
      */
@@ -60,13 +62,11 @@ class BuildingService extends Service implements BuildingServiceContract
 
     /**
      * @inheritDoc
+     * @codeCoverageIgnore - ignored because we can't check randomness, we should rely on PHP to be tested for this
      */
     public function selectBuilding(ArrayCollection $buildings): Building
     {
-        $availableBuildings = $buildings->filter(function(Building $building){
-            return $building->getHealth() > 0;
-        });
-
+        $availableBuildings = $this->filterBuildingsByHealth($buildings);
         $availableBuildings = $availableBuildings->toArray();
         shuffle($availableBuildings);
 

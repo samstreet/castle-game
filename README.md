@@ -52,7 +52,25 @@ by changing one thing in the file structure
 
 ###ANSWERS
 
-Please submit any answers to questions here 
+LIB\BuildingAction\BuildingActions:
+- Namespacing has oddly capitalised letters which may cause issues on some filesystems.
+- Lacking docblock
+- No new line at end of file
+- Allows health to go below 0
+- Doesn't actually return anything so it will decrease the health but will not return the updated instance. 
+
+Folder structure:
+ - Move content into public directory and only allow access to that directory via the server.
+ 
+ Other found issues:
+ - composer.json has missing key for the src file. I updated it to be `App\\` but it could be anything
+ - Weird capitalisation of LIB would cause issues on some filesystems
+ - Game\Play __construct uses three arguments, but never uses the farm count to generate farms
+ - Game\Play buildCity uses house count to generate number of farms, this doesn't leave it open for custom games
+ - Game\Play attack never checks if a building can be attacked
+ - Game\Play attack never checks if a game has ended it will just keep running for a specified number of times even if there are no buildings left
+ - use statements in Game\Play could be simplified to be `use Building` and buildings referenced like `Buildings\Castle` etc. 
+ 
 
 ###BONUS POINTS
 

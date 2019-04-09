@@ -46,7 +46,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::makeGame()
+     * @covers \App\Game\Services\GameService::makeGame()
      */
     public function testMakeGameGeneratesAGame()
     {
@@ -61,7 +61,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::makeGame()
+     * @covers \App\Game\Services\GameService::makeGame()
      */
     public function testMakeGameReturnsNullWhenRepositoryFails()
     {
@@ -76,7 +76,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::findGame()
+     * @covers \App\Game\Services\GameService::findGame()
      */
     public function testFindGameMethodReturnsGameCorrectly()
     {
@@ -89,7 +89,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::findGame()
+     * @covers \App\Game\Services\GameService::findGame()
      */
     public function testFindGameMethodReturnsGameCorrectlyWhenGameExistsInSession()
     {
@@ -108,7 +108,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::canAttack()
+     * @covers \App\Game\Services\GameService::canAttack()
      */
     public function testCanAttackReturnsTrueIfAnAttackIsPossibleWhenBuildingsHaveHealth()
     {
@@ -125,7 +125,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::canAttack()
+     * @covers \App\Game\Services\GameService::canAttack()
      */
     public function testCanAttackReturnsFalseWhenBuildingsHaveNoHealth()
     {
@@ -148,7 +148,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::getStatusForGame()
+     * @covers \App\Game\Services\GameService::getStatusForGame()
      */
     public function testGetStatusForGamePopulatesArrayCorrectlyWhenGameIsOngoing()
     {
@@ -176,7 +176,7 @@ class GameServiceTest extends TestCase
     }
 
     /**
-     * @covers GameService::getStatusForGame()
+     * @covers \App\Game\Services\GameService::getStatusForGame()
      */
     public function testGetStatusForGamePopulatesArrayCorrectlyWhenGameIsNotAttackable()
     {

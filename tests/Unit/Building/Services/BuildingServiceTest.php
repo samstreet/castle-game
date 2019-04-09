@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Test\Unit\Building\Services;
 
 use App\Building\Services\BuildingService;
+use App\Game\Storage\Entity\Building;
 use App\Game\Storage\Entity\Castle;
 use App\Game\Storage\Entity\Farm;
 use App\Game\Storage\Entity\Game;
@@ -19,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 class BuildingServiceTest extends TestCase
 {
     /**
-     * @covers BuildingService::attachBuildingsToGame()
+     * @covers \App\Building\Services\BuildingService::attachBuildingsToGame()
      */
     public function testAttachBuildingsToGameMethodPopulatesGameCorrectlyWhenSuppliedEmptyBuildingCollection()
     {
@@ -45,7 +46,7 @@ class BuildingServiceTest extends TestCase
     }
 
     /**
-     * @covers BuildingService::attachBuildingsToGame()
+     * @covers \App\Building\Services\BuildingService::attachBuildingsToGame()
      */
     public function testAttachBuildingsToGameMethodPopulatesGameCorrectlyWhenSuppliedPopulatedBuildingCollection()
     {
@@ -84,7 +85,7 @@ class BuildingServiceTest extends TestCase
     /**
      * @param $noHouses
      * @param $noFarms
-     * @covers       BuildingService::createBuildings()
+     * @covers       \App\Building\Services\BuildingService::createBuildings()
      * @dataProvider createBuildingsDataProvider
      */
     public function testCreateBuildingsMethodPopulatesAccuratelyWithArguments($noHouses, $noFarms)
@@ -111,7 +112,7 @@ class BuildingServiceTest extends TestCase
     }
 
     /**
-     * @covers BuildingService::createBuildings()
+     * @covers \App\Building\Services\BuildingService::createBuildings()
      */
     public function testCreateBuildingsMethodPopulatesAccuratelyWithNoArguments()
     {
@@ -134,6 +135,33 @@ class BuildingServiceTest extends TestCase
         $this->assertCount(4, $houses);
         $this->assertCount(4, $farms);
         $this->assertCount(1, $castles);
+    }
+
+    /**
+     * @covers \App\Building\Services\BuildingService::hitBuilding()
+     * @dataProvider hitBuildingDataProvider
+     */
+    public function testHitBuildingMethodReturnsABuildingWithLessHealth(Building $building, int $expectedHealth)
+    {
+        $service = new BuildingService();
+        $after = $service->hitBuilding($building);
+
+        $this->assertTrue($after->getHealth() === $expectedHealth);
+    }
+
+    /**
+     * @return array
+     */
+    public function hitBuildingDataProvider(): array
+    {
+        return [
+            [new Castle(), 90],
+            [(new Castle())->setHealth(10), 0],
+            [new Farm(), 25],
+            [(new Farm())->setHealth(25), 0],
+            [new House(), 55],
+            [(new House())->setHealth(20), 0],
+        ];
     }
 
     /**

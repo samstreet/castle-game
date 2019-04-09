@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Game\Services;
 
+use App\Building\Concerns as BuildingConcerns;
 use App\Building\Services\Contracts as BuildingContracts;
 use App\Game\Services\Contracts\GameServiceContract;
 use App\Game\Storage\Entity\Building;
@@ -22,6 +23,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
  */
 class GameService extends Service implements GameServiceContract
 {
+    use BuildingConcerns\CanFilterBuildings;
     /**
      * @var BuildingContracts\BuildingServiceContract
      */
@@ -95,12 +97,7 @@ class GameService extends Service implements GameServiceContract
      */
     public function canAttack(Game $game): bool
     {
-        /** @var Building $building */
-        $buildings = $game->getBuildings()->filter(function (Building $building) {
-            return $building->getHealth() > 0;
-        });
-
-        return !$buildings->isEmpty();
+        return !$this->filterBuildingsByHealth($game->getBuildings())->isEmpty();
     }
 
     /**
@@ -110,13 +107,13 @@ class GameService extends Service implements GameServiceContract
     {
         $castleStatus = $this->filterBuildingByType($game->getBuildings(), Castle::class)->toArray();
 
-        $farmsStatus = $this->filterBuildingByType($game->getBuildings(), Farm::class)->filter(function(Farm $farm) {
-            return $farm->getHealth() > 0;
-        });
+        $farmsStatus = $this->filterBuildingsByHealth(
+            $this->filterBuildingByType($game->getBuildings(), Farm::class)
+        );
 
-        $houseStatus = $this->filterBuildingByType($game->getBuildings(), House::class)->filter(function(House $house) {
-            return $house->getHealth() > 0;
-        });
+        $houseStatus = $this->filterBuildingsByHealth(
+            $this->filterBuildingByType($game->getBuildings(), House::class)
+        );
 
         $canBeAttacked = $this->canAttack($game);
 
@@ -146,18 +143,6 @@ class GameService extends Service implements GameServiceContract
         }
 
         return new ArrayCollection($sessions);
-    }
-
-    /**
-     * @param ArrayCollection $buildings
-     * @param $type
-     * @return ArrayCollection
-     */
-    private function filterBuildingByType(ArrayCollection $buildings, $type): ArrayCollection
-    {
-        return $buildings->filter(function (Building $building) use ($type) {
-            return $building instanceof $type;
-        });
     }
 
     /**

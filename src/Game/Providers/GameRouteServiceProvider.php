@@ -35,10 +35,6 @@ class GameRouteServiceProvider implements ServiceProviderInterface
      */
     private function bindControllers(Container $app): void
     {
-        $app['game.home.controller'] = function () use ($app) {
-            return new GameController($app['game.game.service']);
-        };
-
         $app['game.api.home.controller'] = function () use ($app) {
             return new APIGameController($app['game.game.service']);
         };

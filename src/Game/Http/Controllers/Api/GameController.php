@@ -75,6 +75,10 @@ class GameController
         $filters = new ParameterBag($request->query->all());
         $games = $this->gameService->allAvailableSessions($filters);
 
+        /**
+         * ideally we would use some sort of paginator here
+         * but it seems a little out of scope for a test.
+         */
         return new JsonResponse([
             'count' => $games->count(),
             'games' => $games->toArray()
