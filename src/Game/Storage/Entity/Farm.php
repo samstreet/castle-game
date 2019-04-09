@@ -6,7 +6,8 @@ namespace App\Game\Storage\Entity;
 
 /**
  * Class Farm
- * @package Building
+ * @package App\Game\Storage\Entity
+ * @codeCoverageIgnore
  */
 class Farm extends Building
 {

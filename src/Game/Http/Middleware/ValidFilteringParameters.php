@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class ValidFilteringParameters
  * @package App\Game\Http\Middleware
+ * @codeCoverageIgnore
  */
 class ValidFilteringParameters
 {

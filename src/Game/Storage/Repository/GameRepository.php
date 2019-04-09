@@ -13,6 +13,7 @@ use Lib\Core\Storage\Repository\Repository;
 /**
  * Class GameRepository
  * @package Lib\Game\Storage\Repository
+ * @codeCoverageIgnore
  */
 class GameRepository extends Repository implements GameRepositoryContract
 {

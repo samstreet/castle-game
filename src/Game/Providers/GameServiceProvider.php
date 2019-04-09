@@ -17,6 +17,7 @@ use Pimple\ServiceProviderInterface;
 /**
  * Class GameServiceProvider
  * @package Lib\Game\Providers
+ * @codeCoverageIgnore
  */
 class GameServiceProvider extends CoreProvider implements ServiceProviderInterface
 {

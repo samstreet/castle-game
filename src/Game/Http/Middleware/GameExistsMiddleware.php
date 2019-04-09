@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @author Sam Street
+ * Class GameExistsMiddleware
+ * @package App\Game\Http\Middleware
+ * @codeCoverageIgnore
  */
 class GameExistsMiddleware implements MiddlewareInterface
 {

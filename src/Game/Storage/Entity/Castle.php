@@ -6,7 +6,8 @@ namespace App\Game\Storage\Entity;
 
 /**
  * Class Castle
- * @package Building
+ * @package App\Game\Storage\Entity
+ * @codeCoverageIgnore
  */
 class Castle extends Building
 {

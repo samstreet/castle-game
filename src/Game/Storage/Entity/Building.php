@@ -11,6 +11,7 @@ use Lib\Core\Storage\Entity\Model;
  * @package App\Game\Storage\Entity
  * @Entity
  * @Table(name="buildings")
+ * @codeCoverageIgnore
  */
 abstract class Building extends Model
 {

@@ -11,8 +11,9 @@ use Pimple\ServiceProviderInterface;
 use Silex\Provider\DoctrineServiceProvider;
 
 /**
+ * Class DatabaseServiceProvider
  * @package App\Game\Providers
- * @author Sam Street <sam.street@tutora.co.uk>
+ * @codeCoverageIgnore
  */
 class DatabaseServiceProvider implements ServiceProviderInterface
 {

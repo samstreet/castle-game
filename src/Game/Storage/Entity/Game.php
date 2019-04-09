@@ -13,6 +13,7 @@ use Ramsey\Uuid\Uuid;
  * @package App\Game\Storage\Entity
  * @Entity
  * @Table(name="game")
+ * @codeCoverageIgnore
  */
 class Game extends Model
 {

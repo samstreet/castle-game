@@ -14,6 +14,7 @@ use Symfony\Component\Yaml\Yaml;
 /**
  * Class GameRouteServiceProvider
  * @package Lib\Game\Providers
+ * @codeCoverageIgnore
  */
 class GameRouteServiceProvider implements ServiceProviderInterface
 {

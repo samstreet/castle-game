@@ -69,7 +69,7 @@ Folder structure:
  - Game\Play buildCity uses house count to generate number of farms, this doesn't leave it open for custom games
  - Game\Play attack never checks if a building can be attacked
  - Game\Play attack never checks if a game has ended it will just keep running for a specified number of times even if there are no buildings left
- - use statements in Game\Play could be simplified to be `use Building` and buildings referenced like `Buildings\Castle` etc. 
+ - use statements in Game\Play could be simplified to be `use Building` and buildings referenced like `Building\Castle` etc. 
  
 
 ###BONUS POINTS
@@ -80,6 +80,17 @@ Folder structure:
 
 Create a git archive of the project and send that to us as your solution with only the 
 necessary files in it.
+ 
+ ### Notes
+ #### running the application
+ - `docker-compose up -d` from the project root or serve from the inbuilt PHP server; `php -S 127.0.0.1:9090 -t public/`. Both docker and the php server use the same port.
+ - `composer install --ignore-platform-reqs`
+ - Using a REST client of your choice, create a game using; POST `127.0.0.1:9090/api/games` make as many or as few as you want
+ - View all games: GET `127.0.0.1:9090/api/games`
+ - View a game: GET `127.0.0.1:9090/api/games/{game id}`
+ - Attack a game: POST `127.0.0.1:9090/api/games/{game id}/attack` keep making requests until the game is finished
+ - unit tests are provided by running in the container (but I prefer just on local machine). Running locally from root `./vendor/bin/phpunit --testdox` 
+ - There is a coverage report in the test/Unit directory
  
 
 

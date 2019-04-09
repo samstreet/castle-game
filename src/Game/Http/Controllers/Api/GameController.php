@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
- * @author Sam Street
+ * Class GameController
+ * @package App\Game\Http\Controllers\Api
+ * @codeCoverageIgnore
  */
 class GameController
 {

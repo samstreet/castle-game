@@ -11,6 +11,7 @@ use Pimple\Container;
 /**
  * Class BuildingServiceProvider
  * @package App\Building\Providers
+ * @codeCoverageIgnore
  */
 class BuildingServiceProvider extends CoreProvider
 {

@@ -32,6 +32,20 @@ class CanFilterBuildingsTest extends TestCase
     }
 
     /**
+     * @covers \App\Building\Concerns\CanFilterBuildings::filterBuildingByType
+     * @dataProvider filterByTypeDataProvider
+     * @param ArrayCollection $buildings
+     * @param string $type
+     * @param int $expectedCount
+     */
+    public function testFilterBuildingByTypeFiltersBuildingsByTheirTypeCorrectly(ArrayCollection $buildings, string $type, int $expectedCount)
+    {
+        /** @var CanFilterBuildings|MockObject $trait */
+        $trait = $this->getMockForTrait(CanFilterBuildings::class);
+        $this->assertCount($expectedCount, $trait->filterBuildingByType($buildings, $type));
+    }
+
+    /**
      * @return array
      */
     public function filterByHealthDataProvider(): array
@@ -39,6 +53,20 @@ class CanFilterBuildingsTest extends TestCase
         return [
             [new ArrayCollection([new Castle(), new Farm(), (new House())->setHealth(0)]), 2],
             [new ArrayCollection([new Castle(), (new House())->setHealth(0), (new House())->setHealth(0)]), 1],
+            [new ArrayCollection([(new Castle())->setHealth(0), (new House())->setHealth(0), (new House())->setHealth(0)]), 0],
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    public function filterByTypeDataProvider(): array
+    {
+        return [
+            [new ArrayCollection([new Castle(), new Farm(), new Farm()]), Farm::class, 2],
+            [new ArrayCollection([new Castle(), new House(), new Farm()]), Farm::class, 1],
+            [new ArrayCollection([new Castle(), new House(), new Farm()]), House::class, 1],
+            [new ArrayCollection([new Castle(), new House(), new Farm(), new House(), new Farm(), new House(), new Farm()]), House::class, 3],
         ];
     }
 }

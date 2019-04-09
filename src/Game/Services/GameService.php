@@ -7,7 +7,6 @@ namespace App\Game\Services;
 use App\Building\Concerns as BuildingConcerns;
 use App\Building\Services\Contracts as BuildingContracts;
 use App\Game\Services\Contracts\GameServiceContract;
-use App\Game\Storage\Entity\Building;
 use App\Game\Storage\Entity\Castle;
 use App\Game\Storage\Entity\Farm;
 use App\Game\Storage\Entity\Game;
@@ -33,6 +32,7 @@ class GameService extends Service implements GameServiceContract
      * GameService constructor.
      * @param GameContracts\GameRepositoryContract $gameRepository
      * @param BuildingContracts\BuildingServiceContract $buildingService
+     * @codeCoverageIgnore
      */
     public function __construct(
         GameContracts\GameRepositoryContract $gameRepository,
@@ -50,7 +50,7 @@ class GameService extends Service implements GameServiceContract
         /** @var Game|null $game */
         if ($game = $this->getRepository()->createGame()) {
             $game = $this->buildingService->attachBuildingsToGame($game, new ArrayCollection());
-            $this->session->set("game.{$game->getId()}", $game);
+            $this->getSession()->set("game.{$game->getId()}", $game);
         }
 
         return $game;
@@ -61,7 +61,7 @@ class GameService extends Service implements GameServiceContract
      */
     public function findGame(string $uuid): ?Game
     {
-        if ($game = $this->session->get("game.{$uuid}")) {
+        if ($game = $this->getSession()->get("game.{$uuid}")) {
             return $game;
         }
 
@@ -136,7 +136,7 @@ class GameService extends Service implements GameServiceContract
      */
     public function allAvailableSessions(ParameterBag $filters): ArrayCollection
     {
-        $games = $this->filteredGamesFromParameters(new ArrayCollection($this->session->all()), $filters);
+        $games = $this->filteredGamesFromParameters(new ArrayCollection($this->getSession()->all()), $filters);
         $sessions = [];
         foreach ($games->toArray() as $game) {
             $sessions[] = $this->getStatusForGame($game);
@@ -149,6 +149,7 @@ class GameService extends Service implements GameServiceContract
      * @param ArrayCollection $games
      * @param ParameterBag $filters
      * @return ArrayCollection
+     * @codeCoverageIgnore
      */
     private function filteredGamesFromParameters(ArrayCollection $games, ParameterBag $filters): ArrayCollection
     {

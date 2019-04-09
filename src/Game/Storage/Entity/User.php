@@ -11,6 +11,7 @@ use Lib\Core\Storage\Entity\Model;
  * @package App\Game\Storage\Entity
  * @Entity
  * @Table(name="users")
+ * @codeCoverageIgnore
  */
 class User extends Model
 {

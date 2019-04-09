@@ -4,7 +4,8 @@ namespace App\Game\Storage\Entity;
 
 /**
  * Class House
- * @package Building
+ * @package App\Game\Storage\Entity
+ * @codeCoverageIgnore
  */
 class House extends Building
 {

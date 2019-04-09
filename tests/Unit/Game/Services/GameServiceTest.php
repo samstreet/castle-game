@@ -14,6 +14,7 @@ use App\Game\Storage\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Session\Session;
 
 /**
@@ -241,5 +242,19 @@ class GameServiceTest extends TestCase
 
         $attackOutcome = $service->attack($game);
         $this->assertNull($attackOutcome);
+    }
+
+    /**
+     * @covers \App\Game\Services\GameService::allAvailableSessions
+     */
+    public function testAllAvailableSessionsPullsAllSessionsCorrectly()
+    {
+        $service = new GameService($this->gameRepository, $this->buildingService);
+
+        $this->session->expects($this->once())->method('all')->willReturn([new Game(), new Game()]);
+        $service->setSession($this->session);
+
+        $data = $service->allAvailableSessions(new ParameterBag());
+        $this->assertCount(2, $data);
     }
 }
